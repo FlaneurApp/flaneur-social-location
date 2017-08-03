@@ -1,0 +1,14 @@
+{
+  "name": "social_location",
+  "version": "0.0.1",
+  "description": "Traking user visits history accrding to social networks",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.81.0"
+  }
+}

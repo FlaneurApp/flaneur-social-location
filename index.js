@@ -36,7 +36,8 @@ var social_location = function(config) {
                 return { instagram:userLocations };
             })
             .catch((ex) => {
-                return Promice.resolve({});
+                // Made because promice all is used. not to stop processing for other possible social networks
+                return Promice.resolve({}); 
             });
             tasks.push(task);
         }

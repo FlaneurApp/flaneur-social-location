@@ -4,11 +4,12 @@
   "description": "Traking user visits history accrding to social networks",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js"
+    "test": "node test/test.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.5.0",
     "request": "^2.81.0"
   }
 }

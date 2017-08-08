@@ -1,6 +1,7 @@
 var Instagram = require('./src/instagram.js');
 var Promice = require('bluebird');
 
+// Function to prapare request task with social network options and request function
 function createTask(option, func) {
     return func(option).catch((ex) => {
         // Made because promice all is used. not to stop processing for other possible social networks
@@ -8,8 +9,9 @@ function createTask(option, func) {
     });
 }
 
+// Function to get user locations info from instagram and format to universal model
 function instagramRecent(option) {
-    return Instagram.getUserRecent(option, null)
+    return Instagram.getUserRecent(option.user, null)
         .then((feed) => {
             var feed_data = feed.data;
             var userLocations = [];
@@ -38,21 +40,29 @@ function instagramRecent(option) {
         });
 }
 
+// List of providers, will be used to collecting info
 const socials = {
     instagram:instagramRecent
 };
 
 var social_location = function (config) {
     var self = this;
-    self.config = config;
+    self.config = config || {}; // general config for future use
 
     self.recentLocation = function (option) {
         var tasks = [];
+        // Preparing tasks according to options.
+        // Options should be an object with following structure:
+        // { "social1":{/* social1 request options */}, "social2":{/* social2 request options */} }
         for(var key in socials) {
             if(option[key]) {
-                tasks.push(createTask(option[key], socials[key]));
+                var requestOption = {};
+                requestOption.user = option[key];
+                requestOption.client = self.config[key];
+                tasks.push(createTask(requestOption, socials[key]));
             }
         }
+        // Waiting until all tasks done
         return Promice.all(tasks)
             .then((promices_result) => {
                 var result = {};

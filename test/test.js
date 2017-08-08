@@ -13,7 +13,7 @@ describe('social_location', () => {
                 .then((user_locations) => {
                     check = typeof user_locations.instagram === 'object';
                     check = check && user_locations.instagram.length > 0;
-                    assert.ok(check, 'instagram member is expected in result');
+                    assert.ok(check, 'instagram member is expected in result (' + JSON.stringify(user_tagged) + ')');
 
                     if (check) {
                         for (var i in user_locations.instagram) {
@@ -23,7 +23,7 @@ describe('social_location', () => {
                             check = check && record["longitude"];
                             check = check && record["timedate"];
                             check && typeof record.users_tagged === 'object';
-                            assert.ok(check, 'record_id, latitude, longitude, timedate, users_tagged should be a part of instagram element');
+                            assert.ok(check, 'record_id, latitude, longitude, timedate, users_tagged should be a part of instagram element (' + JSON.stringify(user_tagged) + ')');
 
                             for (var user_index in record.users_tagged) {
                                 var user_tagged = record.users_tagged[user_index];

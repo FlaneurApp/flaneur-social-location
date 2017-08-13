@@ -23,7 +23,7 @@ describe('socialLocation', () => {
                       assert.ok(check, 'record_id, latitude, longitude, timedate, users_tagged should be a part of instagram element (' + JSON.stringify(record) + ')')
 
                       for (var userIndex in record.usersTagged) {
-                        var userTagged = record.userTagged[userIndex]
+                        var userTagged = record.usersTagged[userIndex]
                         check = userTagged['provider'] === 'instagram'
                         check = check && userTagged['id']
                         check = check && typeof userTagged['name'] === 'string'

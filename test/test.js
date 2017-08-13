@@ -5,7 +5,7 @@ var socialLocation = SocialLocation()
 var assert = require('assert')
 describe('socialLocation', () => {
   describe('#recentLocation()', () => {
-    it('should return user\'s posts with locations as result of promice', function (done) {
+    it('should return user\'s posts with locations as result of Promise', function (done) {
       socialLocation.recentLocation({ instagram: '5598881023.2e7229d.bcc261e454824ea7ac223f02ab8f53c8' })
                 .then((userLocations) => {
                   var check = typeof userLocations.instagram === 'object'

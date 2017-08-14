@@ -3,10 +3,11 @@ var Promise = require('bluebird')
 
 // Function to prapare request task with social network options and request function
 function createTask (option, func) {
-  return func(option).catch((ex) => {
-    // Made because Promise all is used. not to stop processing for other possible social networks
-    return Promise.resolve({ error: ex })
-  })
+  return func(option)
+    .catch((ex) => {
+      // Made because Promise all is used. not to stop processing for other possible social networks
+      return Promise.resolve({ error: ex })
+    })
 }
 
 // Function to parse instagramm data
@@ -50,6 +51,9 @@ function getInstagramFeedPage (user, nextMaxId, userLocations, onlyWithLocation)
 
   return Instagram.getUserRecent(user, null, options)
     .then((resp) => {
+      if (!resp) {
+        return Promise.reject(new Error('Error getting instagramm feed'))
+      }
       userLocations = userLocations.concat(parseInstagrammFeedData(resp.data, onlyWithLocation))
       if (resp.pagination && resp.pagination['next_max_id']) {
         return getInstagramFeedPage(user, resp.pagination['next_max_id'], userLocations, onlyWithLocation)
@@ -65,14 +69,22 @@ function instagramRecent (option) {
 
   var onlyWithLocation = userOption.onlyWithLocation ? parseInt(userOption.onlyWithLocation) : true
   var token = userOption.user || userOption
-  return getInstagramFeedPage(token, null, [], onlyWithLocation)
-    .then((userLocations) => {
-      return { instagram: userLocations }
-    })
-    .catch((ex) => {
-      console.error('Error in Instagram.getUserRecent():', ex)
-      Promise.reject(ex)
-    })
+  return new Promise((resolve, reject) => {
+    getInstagramFeedPage(token, null, [], onlyWithLocation)
+      .then((userLocations) => {
+        resolve({
+          instagram: userLocations
+        })
+      })
+      .catch((ex) => {
+        console.error('Error in Instagram.getUserRecent():', ex)
+        reject(new Error({
+          instagram: {
+            error: ex
+          }
+        }))
+      })
+  })
 }
 
 // List of providers, will be used to collecting info
@@ -102,8 +114,9 @@ var socialLocation = function (config) {
       .then((PromisesResult) => {
         var result = {}
         for (var PromiseIndex in PromisesResult) {
-          for (var providerIndex in PromisesResult[PromiseIndex]) {
-            result[providerIndex] = PromisesResult[PromiseIndex][providerIndex]
+          var currentResult = PromisesResult[PromiseIndex]
+          for (var providerIndex in currentResult) {
+            result[providerIndex] = currentResult[providerIndex]
           }
         }
         return result

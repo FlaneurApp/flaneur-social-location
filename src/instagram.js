@@ -25,8 +25,11 @@ instagramHelper.getUserRecent = function (token, user, options) {
       var obj
       try {
         obj = JSON.parse(res.body)
+        if (obj.meta.code !== 200) {
+          throw new Error(obj.meta)
+        }
       } catch (ex) {
-        console.error('Error parsing instagran mesponse:', ex)
+        console.error('Error in instagran response:', res.body)
         obj = null
       }
       return obj

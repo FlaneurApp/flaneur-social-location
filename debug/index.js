@@ -32,11 +32,11 @@ app.get('/instagram/auth/callback', (req, resp) => {
 })
 
 // Get feed endpoint: http://127.0.0.1:3000/feed
-// Params: 
+// Params:
 // instagram_token - user's instagram token
 // onlyWithLocation - 1 if only records with location needed. 0 - all records. Default - only with location
 app.get('/feed', (req, resp) => {
-  var instagramToken = req.query["instagram_token"];
+  var instagramToken = req.query['instagram_token']
   var onlyWithLocation = req.query.onlyWithLocation || true
   return socialLocation.recentLocation({
     instagram: {

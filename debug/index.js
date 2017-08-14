@@ -14,11 +14,14 @@ const instagramConfig = {
 }
 const port = 3000
 
+// Endpoint for instagram authentification: http://127.0.0.1:3000/instagram/auth
+// callback will be to http://127.0.0.1:3000/instagram/auth/callback
 app.get('/instagram/auth', (req, resp) => {
   var url = Instagram.loginUrl(instagramConfig, 'http://127.0.0.1:' + port + '/instagram/auth/callback')
   resp.redirect(url)
 })
 
+// Endpoint for instagram callback: http://127.0.0.1:3000/instagram/auth/callback
 app.get('/instagram/auth/callback', (req, resp) => {
   return Instagram.callback(instagramConfig, req)
     .then((result) => {
@@ -28,12 +31,16 @@ app.get('/instagram/auth/callback', (req, resp) => {
     })
 })
 
-app.get('/instagram/feed', (req, resp) => {
-  var token = req.query.user;
+// Get feed endpoint: http://127.0.0.1:3000/feed
+// Params: 
+// instagram_token - user's instagram token
+// onlyWithLocation - 1 if only records with location needed. 0 - all records. Default - only with location
+app.get('/feed', (req, resp) => {
+  var instagramToken = req.query["instagram_token"];
   var onlyWithLocation = req.query.onlyWithLocation || true
   return socialLocation.recentLocation({
     instagram: {
-      user: token,
+      user: instagramToken,
       onlyWithLocation: onlyWithLocation
     }
   })

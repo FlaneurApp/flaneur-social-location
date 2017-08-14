@@ -10,43 +10,66 @@ function createTask (option, func) {
 }
 
 // Function to parse instagramm data
-function parseInstagrammFeedData (feedData) {
+function parseInstagrammFeedData (feedData, onlyWithLocation) {
   var result = []
   for (var index in feedData) {
     var feedRecord = feedData[index]
-    if (feedRecord.location) {
-      var locationItem = {
-        record_id: feedRecord.id,
-        latitude: feedRecord.location.latitude,
-        longitude: feedRecord.location.longitude,
-        timedate: new Date(parseInt(feedRecord.created_time) * 1000),
-        usersTagged: []
-      }
-
-      var usersInPhoto = feedRecord['users_in_photo']
-      for (var userIndex in usersInPhoto) {
-        var userOnPhoto = usersInPhoto[userIndex]
-        locationItem.usersTagged.push({
-          provider: 'instagram',
-          id: userOnPhoto.user.id,
-          name: userOnPhoto.user['full_name']
-        })
-      }
-      result.push(locationItem)
+    var locationItem = {
+      record_id: feedRecord.id,
+      timedate: new Date(parseInt(feedRecord.created_time) * 1000),
+      usersTagged: []
     }
+    if (feedRecord.location) {
+      locationItem.latitude = feedRecord.location.latitude
+      locationItem.longitude = feedRecord.location.longitude
+    } else if (onlyWithLocation) {
+      continue
+    }
+
+    var usersInPhoto = feedRecord['users_in_photo']
+    for (var userIndex in usersInPhoto) {
+      var userOnPhoto = usersInPhoto[userIndex]
+      locationItem.usersTagged.push({
+        provider: 'instagram',
+        id: userOnPhoto.user.id,
+        name: userOnPhoto.user['full_name']
+      })
+    }
+    result.push(locationItem)
   }
   return result
 }
 
+function getInstagramFeedPage (user, nextMaxId, userLocations, onlyWithLocation) {
+  var options = {
+    count: 1
+  }
+  if (nextMaxId) {
+    options = { max_id: nextMaxId }
+  }
+
+  return Instagram.getUserRecent(user, null, options)
+    .then((resp) => {
+      userLocations = userLocations.concat(parseInstagrammFeedData(resp.data, onlyWithLocation))
+      if (resp.pagination && resp.pagination['next_max_id']) {
+        return getInstagramFeedPage(user, resp.pagination['next_max_id'], userLocations, onlyWithLocation)
+      } else {
+        return userLocations
+      }
+    })
+}
+
 // Function to get user locations info from instagram and format to universal model
 function instagramRecent (option) {
-  var userLocations = []
+  var userOption = option.user
 
-  return Instagram.getUserRecent(option.user, null, { count: 100 })
-    .then((feed) => {
-      userLocations = userLocations.concat(parseInstagrammFeedData(feed.data))
+  var onlyWithLocation = userOption.onlyWithLocation ? parseInt(userOption.onlyWithLocation) : true
+  var token = userOption.user || userOption
+  return getInstagramFeedPage(token, null, [], onlyWithLocation)
+    .then((userLocations) => {
       return { instagram: userLocations }
-    }).catch((ex) => {
+    })
+    .catch((ex) => {
       console.error('Error in Instagram.getUserRecent():', ex)
       Promise.reject(ex)
     })

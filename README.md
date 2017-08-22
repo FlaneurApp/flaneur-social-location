@@ -30,11 +30,19 @@ The result will have following structure:
                 {
                     "provider":"instagram", // Sosial network key
                     "id":"000000001", // Id of user in Sosial network
-                    "name":"Jon Smith" // Name of user in social network
+                    "fullName":"Jon Smith", // Name of user in social network
+					"name": "jonsmith90",
+					"fullName": "Nataliia Artym",
+					"picture": "https://scontent.cdninstagram.com/t30.2885-19/s150x150/16465407_134027990443410_7777777728803741696_a.jpg"
                 }
             ],
             "latitude":49.786225761362, // Coordinates - latitude
-            "longitude":22.763717472553 // Coordinates - longitude
+            "longitude":22.763717472553, // Coordinates - longitude
+            "info": {    // Information about location from Social network
+                "provider":"instagram",
+                "id":767620622,
+                "name":"Львів"
+            }
         }
     ]
 }

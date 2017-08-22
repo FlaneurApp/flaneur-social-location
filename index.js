@@ -23,6 +23,12 @@ function parseInstagrammFeedData (feedData, onlyWithLocation) {
     if (feedRecord.location) {
       locationItem.latitude = feedRecord.location.latitude
       locationItem.longitude = feedRecord.location.longitude
+      locationItem.info = {
+        provider: 'instagram',
+        id: feedRecord.location.id,
+        address : feedRecord.location["street_address"],
+        name : feedRecord.location.name
+      }
     } else if (onlyWithLocation) {
       continue
     }
@@ -33,7 +39,9 @@ function parseInstagrammFeedData (feedData, onlyWithLocation) {
       locationItem.usersTagged.push({
         provider: 'instagram',
         id: userOnPhoto.user.id,
-        name: userOnPhoto.user['full_name']
+        name: userOnPhoto.user['username'],
+        fullName: userOnPhoto.user['full_name'],
+        picture: userOnPhoto.user['profile_picture']
       })
     }
     result.push(locationItem)

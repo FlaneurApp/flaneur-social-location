@@ -51,7 +51,7 @@ function parseInstagrammFeedData (feedData, onlyWithLocation) {
 
 function getInstagramFeedPage (user, nextMaxId, userLocations, onlyWithLocation) {
   var options = {
-    count: 1
+    count: 30
   }
   if (nextMaxId) {
     options = { max_id: nextMaxId }

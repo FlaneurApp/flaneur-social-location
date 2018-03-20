@@ -1,0 +1,7 @@
+{
+  "instagram": {
+    "clientId": "323002bef22440ee89ba631ee0d54cff",
+    "clientSecret": "51922b09011b45c8a8c104453603e82e",
+    "scopes": ["basic"]
+  }
+}

@@ -56,6 +56,30 @@ function parseOptions(params) {
   }, {})
 }
 
+/**
+ * Global Endpoint for Medias retrieval
+ * This retrieves all the medias of the current user for specified services
+ * Each param represent a service and should have a stringified object as the service-specific
+ * options:
+ *  `social1='{"options1": "val1, "option2": "val2"...}'&social2='{...}'`
+ *
+ * Please refer to the individual services endpoints for available options
+ *
+ * URL:
+ *  /socialLocation
+ * Method:
+ *  GET
+ * URL Params:
+ *  See the description
+ * Success Response:
+ *  - Code: 200
+ *    Content: [arrayOfServiceResponseObjects]
+ * Error Response:
+ *  - Code: 500
+ *    Reason: Server Error
+ * Sample Call:
+ *  https://<region>-<projectName>.cloudfunctions.net/socialLocation?instagram='{"token":"123456789","maxItems":"50"}'
+ */
 const socialLocation = functions.https.onRequest((req, res) => {
   const config = parseOptions(req.query) || {} // general config for future use
   const services = Object.keys(config)

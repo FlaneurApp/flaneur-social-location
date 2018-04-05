@@ -56,7 +56,7 @@ function getTestUserToken(appID, appToken, testUserID) {
 
 /** *************************************** REQUEST UTILS *************************************** */
 /**
- * Request and paginate the resutls of a Facebook Endpoint
+ * Request and paginate the results of a Facebook Endpoint
  * @param {*} uri Facebook Endpoint
  * @param {*} qs Query String (request parameters)
  * @param {*} dest Destination. Used for streaming results (can be a response, a file or any output)
@@ -137,7 +137,7 @@ function paginateResults(uri, qs = {}, dest, parsingFunc, maxItems) {
  * @param {Function} [params.parser] - Function to apply to each item. Optionnal
  * @param {*} dest An optionnal output destination
  */
-function getEvents(params, dest) {
+function getEvents(params = {}, dest) {
   if (!params.token) {
     throw new Error('No access token provided')
   }
@@ -163,7 +163,7 @@ function getEvents(params, dest) {
  * @param {Function} [params.parser] - Function to apply to each item. Optionnal
  * @param {*} dest An optionnal output destination
  */
-function getLocations(params, dest) {
+function getLocations(params = {}, dest) {
   if (!params.token) {
     throw new Error('No access token provided')
   }

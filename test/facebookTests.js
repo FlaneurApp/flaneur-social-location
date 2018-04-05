@@ -3,13 +3,14 @@
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const facebookAPI = require('../services/facebook.js')
+const config = require('./config.json')
 
 chai.use(chaiAsPromised)
 chai.should()
 
-const appID = '1628332767462149'
-const appSecret = '52f303d17b26c71a357fc25d0ad7ab54'
-const fbTestUser = '103546140495597'
+const appID = config.facebookAppID
+const appSecret = config.facebookAppSecret
+const fbTestUser = config.facebookTestUserID
 
 describe('Facebook API', function() {
   let testToken

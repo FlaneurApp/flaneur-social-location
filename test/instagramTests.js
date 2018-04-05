@@ -3,13 +3,12 @@
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const instagramAPI = require('../services/instagram.js')
+const config = require('./config.json')
 
 chai.use(chaiAsPromised)
 chai.should()
 
-// Note: this token can be expired. In this case, please manually regenerate one with
-//       the instagramConnection endpoint
-const instagramToken = '3505645396.323002b.0dc571b28d60448aac1ff80cef290a94'
+const instagramToken = config.instagramToken
 
 describe('instagram API', function() {
   before(function() {

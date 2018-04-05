@@ -22,9 +22,8 @@ function instagramDataParser(data, onlyWithLocation) {
       locationItem.latitude = feedRecord.location.latitude
       locationItem.longitude = feedRecord.location.longitude
       locationItem.info = {
-        provider: 'instagram',
         id: feedRecord.location.id,
-        address: feedRecord.location.street_address,
+        address: feedRecord.location.street_address || null,
         name: feedRecord.location.name
       }
     } else if (onlyWithLocation) {
@@ -34,7 +33,6 @@ function instagramDataParser(data, onlyWithLocation) {
     const usersInPhoto = feedRecord.users_in_photo
     locationItem.usersTagged = usersInPhoto.map((userOnPhoto) => {
       return {
-        provider: 'instagram',
         id: userOnPhoto.user.id,
         name: userOnPhoto.user.username,
         fullName: userOnPhoto.user.full_name,
@@ -47,8 +45,8 @@ function instagramDataParser(data, onlyWithLocation) {
   }, [])
 }
 
-function getUserPhotos(params, dest) {
-  const { token, maxID, batchSize, maxItems, onlyWithLocation } = params
+function getUserPhotos(params = {}, dest) {
+  const { token, maxID, batchSize, maxItems, parser, onlyWithLocation } = params
   const options = {
     uri: `${instagramURL}/${recentMediaPath}`,
     qs: {
@@ -86,7 +84,13 @@ function getUserPhotos(params, dest) {
           count += thisCount
         }
 
-        photosData = instagramDataParser(photosData, onlyWithLocation)
+        // If a parsing function is specified, apply it
+        if (parser) {
+          photosData = photosData.map(parser)
+        } else {
+          // Else apply the default parsing function
+          photosData = instagramDataParser(photosData, onlyWithLocation)
+        }
 
         // Parse here
         if (dest) {

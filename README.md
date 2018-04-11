@@ -54,7 +54,7 @@ Promise.all([
 
 ### Instagram
 
-```json
+```js
 {
     [ // Array of records with social network name as a key
         {
@@ -85,7 +85,7 @@ Promise.all([
 
 #### Tagged Places (Locations)
 
-```json
+```js
 {
     [ // Array of records with social network name as a key
         {
@@ -111,7 +111,7 @@ Promise.all([
 
 #### Events
 
-```json
+```js
 {
     [ // Array of records with social network name as a key
         {

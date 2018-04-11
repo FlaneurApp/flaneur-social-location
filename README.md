@@ -1,25 +1,41 @@
-## Owerview
-Module to collect location history from different social networks.
-Supported networks: Instagram, Facebook (Tagged Places & Events)
+# flaneur-social-location
 
-## Usage:
-Each network has his own service exposing different methods for data retrieval, but the usage and parameters stay almost the same.
+[![Build Status](https://travis-ci.org/FlaneurApp/flaneur-social-location.svg?style=flat-square)](https://travis-ci.org/FlaneurApp/flaneur-social-location)
+![Dependencycy status](https://img.shields.io/david/FlaneurApp/flaneur-social-location.svg?style=flat-square)
+[![npm version](https://img.shields.io/npm/v/flaneur-social-location.svg?style=flat-square)](https://www.npmjs.com/package/flaneur-social-location)
+
+## Overview
+
+A module to collect location history from different social networks.
+The supported networks are:
+
+* Instagram
+* Facebook (Tagged Places & Events)
+
+## Usage
+
+Each network has its own service exposing different methods for data retrieval,
+but the usage and parameters are pretty much the same.
+
 Each method accepts two arguments:
-* `params`, an object containing the parameters
-* `dest`, a function for batch streaming (each batch will be send to the `dest` function instead of being sent in one block at the end of the request)
 
-Params has always the following properties available:
+* `params`: an object containing the parameters
+* `dest`: a function for batch streaming (each batch will be send to the `dest` function instead of being sent in one block at the end of the request)
+
+Params have always the following properties available:
+
 * `token`: String, Required. The user token for the given service.
 * `batchSize`: Integer, Optional. Number of items in each batch. Especially useful when used with `dest`. Note that the APIs have their own limits.
 * `maxItems`: Integer, Optional. Maximum number of records to retrieve.
 * `parser`: Function, Optional. A parsing function to apply to each item.
 
-### Instagram-specific Parameters
+## Instagram-specific Parameters
 
 * `maxID`: String, Optional. Fetch the posts from this ID.
 * `onlyWithLocation`: Boolean, Optional. Fetch only posts with location. Doesn't used if a custom parser function is provided.
 
 ## Code sample:
+
 ```js
 const socialLocation = require('social_location')
 
@@ -123,4 +139,6 @@ Promise.all([
 Note that in Facebook Events, the `place.id` and `location` properties may not exist if the linked location doesn't exist in Facebook.
 
 ## Unit Tests
-For Unit Testing, API informations (keys and/or tokens) are required. Please fill the `test/config.json` file if your need to run Unit Tests.
+
+For Unit Testing, API credentials (keys and/or tokens) are required.
+Please fill the `test/config.json` file if your need to run Unit Tests.

@@ -27,7 +27,7 @@ describe('instagram API', function() {
 
           response.should.be.an('array').with.lengthOf(20)
           response.forEach((item) => {
-            item.should.include.all.keys(['record_id', 'timedate', 'usersTagged'])
+            item.should.include.all.keys(['record_id', 'timedate', 'images', 'usersTagged'])
             if (item.info) {
               withLocation += 1
               item.should.include.all.keys(['latitude', 'longitude', 'info'])
@@ -61,7 +61,7 @@ describe('instagram API', function() {
           chunksCount.should.equal(5)
           fullResponseBody.should.be.an('array').with.lengthOf(12)
           fullResponseBody.forEach((item) => {
-            item.should.have.all.keys(['record_id', 'timedate', 'latitude', 'longitude', 'info', 'usersTagged'])
+            item.should.have.all.keys(['record_id', 'timedate', 'images', 'latitude', 'longitude', 'info', 'usersTagged'])
           })
           return true
         }).should.eventually.be.true

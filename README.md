@@ -34,6 +34,10 @@ Params have always the following properties available:
 * `maxID`: String, Optional. Fetch the posts from this ID.
 * `onlyWithLocation`: Boolean, Optional. Fetch only posts with location. Doesn't used if a custom parser function is provided.
 
+## Facebook-specific Parameters
+
+* `withCover`: Boolean, Optional. Include the cover photo (when available) for each location.
+
 ## Code sample:
 
 ```js
@@ -103,6 +107,7 @@ Promise.all([
                     "zip": "40213" // Zip (if available)
                 }
             }
+            "cover": "https://..." // Cover photo (if withCover = true)
         },
         // Other records
     ]
@@ -129,7 +134,8 @@ Promise.all([
                     "street": "Place de l\'Hôtel de Ville", // Street (if available)
                     "zip": "30100" // Zip (if available)
                 }
-            }
+            },
+            "cover": "https://..." // Cover photo (if withCover = true)
         },
         // Other records
     ]

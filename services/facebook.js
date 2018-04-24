@@ -169,6 +169,7 @@ function constructRequest(uri, params, withCover) {
  * Request and paginate the results of a Facebook Endpoint
  * @param {*} uri Facebook Endpoint
  * @param {*} qs Query String (request parameters)
+ * @param {*} withCover Include the cover photo URL (if available)
  * @param {*} dest Destination. Used for streaming results (can be a response, a file or any output)
  * @param {*} parsingFunc A function to apply to each result
  * @param {*} maxItems Maximum number of items to retrieve
@@ -251,6 +252,7 @@ function paginateResults(uri, qs = {}, withCover, dest, parsingFunc, maxItems) {
  * @param {Object} params - Request Query String
  * @param {string} params.token - Facebook User Token
  * @param {string} [params.batchSize] - Items per batch. Optionnal
+ * @param {boolean} [params.withCover] - Include the cover photo URL. Optionnal
  * @param {integer} [params.maxItems] - Maximum number of items to retrieve. Optionnal
  * @param {Function} [params.parser] - Function to apply to each item. Optionnal
  * @param {*} dest An optionnal output destination
@@ -277,6 +279,7 @@ function getEvents(params = {}, dest) {
  * @param {Object} params - Request Query String
  * @param {string} params.token - Facebook User Token
  * @param {string} [params.batchSize] - Items per batch. Optionnal
+ * @param {boolean} [params.withCover] - Include the cover photo URL. Optionnal
  * @param {integer} [params.maxItems] - Maximum number of items to retrieve. Optionnal
  * @param {Function} [params.parser] - Function to apply to each item. Optionnal
  * @param {*} dest An optionnal output destination

@@ -1,6 +1,6 @@
 {
   "name": "flaneur-social-location",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Traking user visits history accrding to social networks",
   "main": "index.js",
   "scripts": {

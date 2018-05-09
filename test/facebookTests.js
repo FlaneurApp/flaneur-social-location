@@ -91,6 +91,46 @@ describe('Facebook API', function() {
           })
         })
     })
+
+    it('Should return the covers with withCover option', function() {
+      const options = {
+        token: testToken,
+        withCover: true
+      }
+
+      return facebookAPI.getLocations(options)
+        .then((response) => {
+          response.should.be.an('array').and.have.lengthOf(15)
+          response.forEach((element) => {
+            element.should.have.all.keys('id', 'created_time', 'place', 'cover')
+            element.place.should.have.all.keys('id', 'location', 'name')
+          })
+        })
+    })
+
+    it('Should stream the results with covers with dest and withCover options', function() {
+      let chunksCount = 0
+      let fullResponseBody = []
+      const options = {
+        token: testToken,
+        batchSize: 3,
+        withCover: true
+      }
+      const dest = function dest(chunk) {
+        chunksCount += 1
+        fullResponseBody = fullResponseBody.concat(JSON.parse(chunk))
+      }
+
+      return facebookAPI.getLocations(options, dest)
+        .then(() => {
+          chunksCount.should.equal(5)
+          fullResponseBody.should.be.an('array').and.have.lengthOf(15)
+          fullResponseBody.forEach((element) => {
+            element.should.have.all.keys('id', 'created_time', 'place', 'cover')
+            element.place.should.have.all.keys('id', 'location', 'name')
+          })
+        })
+    })
   })
 
   describe('Events', function() {

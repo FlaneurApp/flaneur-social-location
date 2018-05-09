@@ -15,7 +15,8 @@ function instagramDataParser(data, onlyWithLocation) {
   return data.reduce((results, feedRecord) => {
     const locationItem = {
       record_id: feedRecord.id,
-      timedate: new Date(parseInt(feedRecord.created_time, 10) * 1000)
+      timedate: new Date(parseInt(feedRecord.created_time, 10) * 1000),
+      images: feedRecord.images
     }
 
     if (feedRecord.location) {
@@ -92,11 +93,13 @@ function getUserPhotos(params = {}, dest) {
           photosData = instagramDataParser(photosData, onlyWithLocation)
         }
 
-        // Parse here
-        if (dest) {
-          dest(JSON.stringify(photosData))
-        } else {
-          data = data.concat(photosData)
+        if (photosData) {
+          // Parse here
+          if (dest) {
+            dest(JSON.stringify(photosData))
+          } else {
+            data = data.concat(photosData)
+          }
         }
 
         if ((!maxItems || count < maxItems) && instagramResponse.pagination.next_max_id) {
